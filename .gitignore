@@ -49,3 +49,14 @@ $RECYCLE.BIN/
 .idea/
 .history/
 IlluminatedCloud/
+force-app/main/default/classes/ContactCaseQueueabl.cls
+force-app/main/default/classes/ContactCaseQueueable.cls
+force-app/main/default/classes/ContactCaseQueueable.cls-meta.xml
+force-app/main/default/classes/ContactCaseQueueableTest.cls
+force-app/main/default/classes/ContactCaseQueueableTest.cls-meta.xml
+/force-app/main/default/classes/ContactCaseQueueableTest.cls
+/force-app/main/default/classes/ContactStatusBatch.cls
+/force-app/main/default/classes/ContactStatusBatch.cls-meta.xml
+/force-app/main/default/classes/ContactStatusBatchTest.cls
+/force-app/main/default/classes/ContactStatusBatchTest.cls-meta.xml
+/force-app/main/default/classes/ProjectStatusBatch.cls-meta.xml
