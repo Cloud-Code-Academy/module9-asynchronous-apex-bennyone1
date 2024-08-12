@@ -21,40 +21,34 @@
 public with sharing class NextStepBatch implements Database.Batchable<sObject>{
 
     public Database.QueryLocator start(Database.BatchableContext bc){
-        // Query for all accounts and return the query locator.
-        return null; // Update null with the query locator
+        return Database.getQueryLocator([SELECT Id, Name FROM Account]); // Update null with the query locator
     }
     
     public void execute(Database.BatchableContext bc, List<Account> scope){
         final String BATCH_NEXT_STEP = 'Batching the next meetings together.';
-
-        // Update the Next Step field on each record in the batch scope.
-
-        // Loop through the scope account records
-
-            // Set the Next Step field to 'Batching the next meetings together.'
-
-        // Update the account records in this batch scope
-        
-        // Query for all opportunities related to the accounts in this batch scope
-
-        // Loop through the opportunity records
-
-            // Set the Next Step field to 'Batching the next meetings together.'
-
-        // Update the opportunity records
-
+        for (Account acc : scope) {
+            acc.Next_Step__c = BATCH_NEXT_STEP;
+        }
+        update scope;
+    
+        List<Opportunity> opps = [SELECT Id, AccountId FROM Opportunity WHERE AccountId IN :scope];
+        for (Opportunity opp : opps) {
+            opp.NextStep = BATCH_NEXT_STEP;
+        }
+        update opps;
     }
     
-    public void finish(Database.BatchableContext bc){
+    public void finish(Database.BatchableContext bc) {
         final List<User> USERS = [SELECT Id, Name, Email FROM User WHERE IsActive = true AND (NOT Email LIKE 'autoproc%')]; // DO NOT CHANGE
-
-        // Get the email addresses of all active users
-
-            // Pass the set of active user emails to the sendEmailToActiveUsers method
+        if (!USERS.isEmpty()) {
+            Set<String> emailAddresses = new Set<String>();
+            for (User user : USERS) {
+                emailAddresses.add(user.Email);
+            }
+            sendEmailToActiveUsers(emailAddresses);
+        }
     }
 
-    // Helper method to send an email to all emails in the set
     private void sendEmailToActiveUsers(Set<String> emails){
         try {
             Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
